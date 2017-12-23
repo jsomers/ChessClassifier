@@ -7,7 +7,7 @@ import tensorflow as tf
 from meta import Meta
 
 tf.app.flags.DEFINE_string('data_dir', './data',
-                           'Directory to SVHN (format 1) folders and write the converted files')
+                           'Directory to chessboard folders and write the converted files')
 FLAGS = tf.app.flags.FLAGS
 
 
