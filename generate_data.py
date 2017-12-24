@@ -5,6 +5,7 @@ from chess import pgn
 from io import StringIO
 import random
 import sys
+import glob
 
 import xml.etree.ElementTree as ET
 
@@ -21,18 +22,30 @@ def fen_to_png(fen):
 
     filename = fen.replace("/", "-")
 
-    folder = FOLDERS[random.randint(0, 2)]
+    r = random.randint(0, 24)
+    if r < 3:
+        x = 0
+    elif r < 6:
+        x = 1
+    else:
+        x = 2
+    folder = FOLDERS[x]
     cairosvg.svg2png(bytestring=svg, write_to="./data/%s/%s.png" % (folder, filename))
-    #print("Wrote %s.png" % filename)
 
-raw = open("./data/fens/Adams.pgn", "r").read()
-lines = [line for line in raw.split("\n") if line.count("[") == 0]
-processed = "\n".join(lines)
-games = processed.split("\n\n")
+def clean(pgn_file):
+    raw = open(pgn_file, "r").read()
+    lines = [line for line in raw.split("\n") if line.count("[") == 0]
+    return "\n".join(lines)
+
+processed = ""
+for path in glob.glob("./fens/*.pgn"):
+    processed += "    " + clean(path)
+
+games = processed.split("\r\n\r\n")
 
 fens = {}
 for game_str in games:
-    pgn = StringIO(game_str)
+    pgn = StringIO(u"%s" % game_str)
     game = chess.pgn.read_game(pgn)
     
     node = game
