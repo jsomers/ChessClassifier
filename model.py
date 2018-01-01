@@ -69,7 +69,7 @@ class Model(object):
             dropout = tf.layers.dropout(pool, rate=drop_rate)
             hidden8 = dropout
 
-        flatten = tf.reshape(hidden8, [-1, 4 * 4 * 192])
+        flatten = tf.reshape(hidden8, [-1, 7 * 7 * 192])
 
         with tf.variable_scope('hidden9'):
             dense = tf.layers.dense(flatten, units=3072, activation=tf.nn.relu)
@@ -336,11 +336,11 @@ class Model(object):
             piece64 = dense
 
         pieces_logits = tf.stack([piece1, piece2, piece3, piece4, piece5, piece6, piece7, piece8, piece9, piece10, piece11, piece12, piece13, piece14, piece15, piece16, piece17, piece18, piece19, piece20, piece21, piece22, piece23, piece24, piece25, piece26, piece27, piece28, piece29, piece30, piece31, piece32, piece33, piece34, piece35, piece36, piece37, piece38, piece39, piece40, piece41, piece42, piece43, piece44, piece45, piece46, piece47, piece48, piece49, piece50, piece51, piece52, piece53, piece54, piece55, piece56, piece57, piece58, piece59, piece60, piece61, piece62, piece63, piece64], axis=1) # TODO: 64 of these
+        #import pdb; pdb.set_trace()
         return pieces_logits
 
     @staticmethod
     def loss(pieces_logits, pieces_labels):
-        import pdb; pdb.set_trace()
         piece1_cross_entropy = tf.reduce_mean(tf.losses.sparse_softmax_cross_entropy(labels=pieces_labels[:, 0], logits=pieces_logits[:, 0, :]))
         piece2_cross_entropy = tf.reduce_mean(tf.losses.sparse_softmax_cross_entropy(labels=pieces_labels[:, 1], logits=pieces_logits[:, 1, :]))
         piece3_cross_entropy = tf.reduce_mean(tf.losses.sparse_softmax_cross_entropy(labels=pieces_labels[:, 2], logits=pieces_logits[:, 2, :]))
