@@ -27,12 +27,12 @@ def _train(path_to_train_tfrecords_file, num_train_examples, path_to_val_tfrecor
     num_steps_to_check = 1000
 
     with tf.Graph().as_default():
-        image_batch, length_batch, digits_batch = Donkey.build_batch(path_to_train_tfrecords_file,
+        image_batch, pieces_batch = Donkey.build_batch(path_to_train_tfrecords_file,
                                                                      num_examples=num_train_examples,
                                                                      batch_size=batch_size,
                                                                      shuffled=True)
-        length_logtis, digits_logits = Model.inference(image_batch, drop_rate=0.2)
-        loss = Model.loss(length_logtis, digits_logits, length_batch, digits_batch)
+        pieces_logits = Model.inference(image_batch, drop_rate=0.2)
+        loss = Model.loss(pieces_logits, pieces_batch)
 
         global_step = tf.Variable(0, name='global_step', trainable=False)
         learning_rate = tf.train.exponential_decay(training_options['learning_rate'], global_step=global_step,
