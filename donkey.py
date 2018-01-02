@@ -6,7 +6,7 @@ class Donkey(object):
     def _preprocess(image):
         image = tf.image.convert_image_dtype(image, dtype=tf.float32)
         image = tf.multiply(tf.subtract(image, 0.5), 2) # Rescales to [-1, 1] instead of [0, 1]
-        image = tf.reshape(image, [100, 100, 3])
+        image = tf.reshape(image, [100, 100, 4]) # FIXME: 4th channel?
         return image
 
     @staticmethod
@@ -33,7 +33,6 @@ class Donkey(object):
 
         min_queue_examples = int(0.4 * num_examples)
         if shuffled:
-            # import pdb; pdb.set_trace()
             image_batch, pieces_batch = tf.train.shuffle_batch([image, pieces],
                                                                              batch_size=batch_size,
                                                                              num_threads=2,
