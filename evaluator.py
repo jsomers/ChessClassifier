@@ -13,20 +13,19 @@ class Evaluator(object):
         needs_include_length = False
 
         with tf.Graph().as_default():
-            image_batch, length_batch, digits_batch = Donkey.build_batch(path_to_tfrecords_file,
+            image_batch, pieces_batch = Donkey.build_batch(path_to_tfrecords_file,
                                                                          num_examples=num_examples,
                                                                          batch_size=batch_size,
                                                                          shuffled=False)
-            length_logits, digits_logits = Model.inference(image_batch, drop_rate=0.0)
-            length_predictions = tf.argmax(length_logits, axis=1)
-            digits_predictions = tf.argmax(digits_logits, axis=2)
+            pieces_logits = Model.inference(image_batch, drop_rate=0.0)
+            pieces_predictions = tf.argmax(pieces_logits, axis=2)
 
-            if needs_include_length:
-                labels = tf.concat([tf.reshape(length_batch, [-1, 1]), digits_batch], axis=1)
-                predictions = tf.concat([tf.reshape(length_predictions, [-1, 1]), digits_predictions], axis=1)
-            else:
-                labels = digits_batch
-                predictions = digits_predictions
+            #if needs_include_length:
+            #    labels = tf.concat([tf.reshape(length_batch, [-1, 1]), digits_batch], axis=1)
+            #    predictions = tf.concat([tf.reshape(length_predictions, [-1, 1]), digits_predictions], axis=1)
+            #else:
+            labels = pieces_batch
+            predictions = pieces_predictions
 
             labels_string = tf.reduce_join(tf.as_string(labels), axis=1)
             predictions_string = tf.reduce_join(tf.as_string(predictions), axis=1)
@@ -38,8 +37,8 @@ class Evaluator(object):
 
             tf.summary.image('image', image_batch)
             tf.summary.scalar('accuracy', accuracy)
-            tf.summary.histogram('variables',
-                                 tf.concat([tf.reshape(var, [-1]) for var in tf.trainable_variables()], axis=0))
+            #tf.summary.histogram('variables',
+            #                     tf.concat([tf.reshape(var, [-1]) for var in tf.trainable_variables()], axis=0))
             summary = tf.summary.merge_all()
 
             with tf.Session() as sess:
