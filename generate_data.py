@@ -30,7 +30,7 @@ def fen_to_png(fen):
     else:
         x = 2
     folder = FOLDERS[x]
-    cairosvg.svg2png(bytestring=svg, write_to="./data/%s/%s.png" % (folder, filename))
+    cairosvg.svg2png(bytestring=svg, write_to="./out_of_sample_data/%s.png" % (filename))
 
 def clean(pgn_file):
     raw = open(pgn_file, "r").read()
