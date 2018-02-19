@@ -1,8 +1,8 @@
 # ChessClassifier
 
-Based on SVHNClassifier, a TensorFlow implementation of [Multi-digit Number Recognition from Street View Imagery using Deep Convolutional Neural Networks](http://arxiv.org/pdf/1312.6082.pdf). Here, instead of recognizing house numbers in Street View images, we're recognizing pieces in chessboards. So for instance the goal is to take an image like this:
+Based on [SVHNClassifier](https://github.com/potterhsu/SVHNClassifier). Here, instead of recognizing house numbers in Street View images, we're recognizing pieces in chessboards. So for instance the goal is to take an image like this:
 
-![image](https://user-images.githubusercontent.com/21294/36359922-909faea8-14ed-11e8-8edc-767f408353af.png)
+![image](https://user-images.githubusercontent.com/21294/36360239-0154b60a-14f0-11e8-82f0-ad8e254d830c.png)
 
 and figure out what all the pieces are. Here's one representation, where "X" means "blank square," capital letters are white pieces, and lowercase letters are black pieces:
 
