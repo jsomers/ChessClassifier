@@ -38,7 +38,9 @@ def _train(path_to_train_tfrecords_file, num_train_examples, path_to_val_tfrecor
         learning_rate = tf.train.exponential_decay(training_options['learning_rate'], global_step=global_step,
                                                    decay_steps=training_options['decay_steps'], decay_rate=training_options['decay_rate'], staircase=True)
         optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-        train_op = optimizer.minimize(loss, global_step=global_step)
+        grad_vars = optimizer.compute_gradients(loss)
+        clipped_grad_vars = [(tf.clip_by_norm(grad, 1.), var) for grad, var in grad_vars]
+        train_op = optimizer.apply_gradients(clipped_grad_vars, global_step=global_step)
 
         tf.summary.image('image', image_batch)
         tf.summary.scalar('loss', loss)
