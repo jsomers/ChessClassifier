@@ -6,7 +6,7 @@ class Donkey(object):
     def _preprocess(image):
         image = tf.image.convert_image_dtype(image, dtype=tf.float32)
         image = tf.multiply(tf.subtract(image, 0.5), 2) # Rescales to [-1, 1] instead of [0, 1]
-        image = tf.reshape(image, [100, 100, 4]) # FIXME: 4th channel?
+        image = tf.reshape(image, [100, 100, 1]) # 1 dimension instead of 3 (or 4)
         return image
 
     @staticmethod
